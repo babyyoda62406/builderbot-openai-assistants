@@ -2,8 +2,9 @@ import "dotenv/config"
 import { createBot, createProvider, createFlow, addKeyword, EVENTS } from '@builderbot/bot'
 import { MemoryDB } from '@builderbot/bot'
 import { BaileysProvider } from '@builderbot/provider-baileys'
-import { toAsk, httpInject } from "@builderbot-plugins/openai-assistants"
+import {  httpInject } from "@builderbot-plugins/openai-assistants"
 import { typing } from "./utils/presence"
+import { toAsk } from "./dtm/openrouter/openrouter"
 
 /** Puerto en el que se ejecutará el servidor */
 const PORT = process.env.PORT ?? 3008
@@ -18,6 +19,7 @@ const userLocks = new Map(); // New lock mechanism
  */
 const processUserMessage = async (ctx, { flowDynamic, state, provider }) => {
     await typing(ctx, provider);
+    // const response = await toAsk(ASSISTANT_ID, ctx.body, state);
     const response = await toAsk(ASSISTANT_ID, ctx.body, state);
 
     // Split the response into chunks and send them sequentially
@@ -33,7 +35,7 @@ const processUserMessage = async (ctx, { flowDynamic, state, provider }) => {
  */
 const handleQueue = async (userId) => {
     const queue = userQueues.get(userId);
-    
+
     if (userLocks.get(userId)) {
         return; // If locked, skip processing
     }
@@ -60,6 +62,7 @@ const handleQueue = async (userId) => {
  */
 const welcomeFlow = addKeyword<BaileysProvider, MemoryDB>(EVENTS.WELCOME)
     .addAction(async (ctx, { flowDynamic, state, provider }) => {
+        console.log(`Mensaje recibido de ${ctx.from}: ${ctx.body}`);
         const userId = ctx.from; // Use the user's ID to create a unique queue for each user
 
         if (!userQueues.has(userId)) {
