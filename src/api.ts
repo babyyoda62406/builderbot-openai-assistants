@@ -6,7 +6,7 @@ import { BaileysProvider } from '@builderbot/provider-baileys';
 import { createProvider } from '@builderbot/bot';
 
 const app = express();
-const PORT = process.env.PORT ?? 3008;
+const API_PORT = process.env.API_PORT ?? process.env.PORT ?? 3008;
 const JWT_SECRET = process.env.JWT_SECRET ?? 'your-secret-key';
 
 // Middleware
@@ -171,8 +171,8 @@ app.get('/status', authenticateToken, async (req, res) => {
 
 // Start server
 const startServer = () => {
-  app.listen(PORT, () => {
-    console.log(`WhatsApp API server running on port ${PORT}`);
+  app.listen(API_PORT, () => {
+    console.log(`WhatsApp API server running on port ${API_PORT}`);
   });
 };
 

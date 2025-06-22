@@ -1,4 +1,4 @@
-# WhatsApp AI Assistant Bot with REST API (BuilderBot.app)
+# WhatsApp REST API Server
 
 <p align="center">
   <img src="https://builderbot.vercel.app/assets/thumbnail-vector.png" height="80">
@@ -6,20 +6,16 @@
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/6VbbLI?referralCode=jyd_0y)
 
-This project creates a WhatsApp bot that integrates with an AI assistant using BuilderBot technology. It allows for automated conversations and intelligent responses powered by OpenAI's assistant API. **Now includes a REST API for sending WhatsApp messages programmatically.**
+This project creates a WhatsApp REST API server using BuilderBot and Baileys technology. It allows you to send WhatsApp messages programmatically through HTTP endpoints.
 
 ## Features
 
-- Automated conversation flows for WhatsApp
-- Integration with OpenAI's assistant API
-- **NEW: REST API for sending WhatsApp messages**
-- **NEW: JWT Authentication for API security**
-- **NEW: Support for media files (images, videos, documents)**
-- Agnostic to WhatsApp provider
-- Automated responses to frequently asked questions
-- Real-time message receiving and responding
-- Interaction tracking with customers
-- Expandable functionality through triggers
+- **REST API for sending WhatsApp messages**
+- **JWT Authentication for API security**
+- **Support for media files (images, videos, documents)**
+- **QR Code scanning for WhatsApp Web connection**
+- **Real-time message sending**
+- **Comprehensive validation and error handling**
 
 ## API Features
 
@@ -40,13 +36,13 @@ This project creates a WhatsApp bot that integrates with an AI assistant using B
 3. Set up your environment variables in a `.env` file:
    ```
    PORT=3008
-   ASSISTANT_ID=your_openai_assistant_id
    JWT_SECRET=your-secret-key
    ```
 4. Run the development server:
    ```
    pnpm run dev
    ```
+5. **Scan the QR code** that appears in the console to connect your WhatsApp account
 
 ### Using Docker (Recommended)
 
@@ -54,11 +50,11 @@ This project includes a Dockerfile for easy deployment and consistent environmen
 
 1. Build the Docker image:
    ```
-   docker build -t whatsapp-ai-assistant .
+   docker build -t whatsapp-api-server .
    ```
 2. Run the container:
    ```
-   docker run -p 3008:3008 --env-file .env whatsapp-ai-assistant
+   docker run -p 3008:3008 --env-file .env whatsapp-api-server
    ```
 
 This method ensures that the application runs in a consistent environment across different systems.
@@ -120,14 +116,14 @@ async function sendWhatsAppMessage() {
 
 ## Usage
 
-The bot is configured in the `src/app.ts` file. It uses the BuilderBot library to create flows and handle messages. The main welcome flow integrates with the OpenAI assistant to generate responses.
+The API server is configured in `src/api.ts` and provides REST endpoints for sending WhatsApp messages programmatically.
 
-The API is configured in `src/api.ts` and provides REST endpoints for sending WhatsApp messages programmatically.
+The main application in `src/app.ts` initializes the WhatsApp connection and starts the API server.
 
 ## Documentation
 
 - **API Documentation**: See [API_DOCUMENTATION.md](API_DOCUMENTATION.md) for complete API reference
-- **BuilderBot Documentation**: For more detailed information on how to use and extend this bot, please refer to the [BuilderBot documentation](https://builderbot.vercel.app/).
+- **BuilderBot Documentation**: For more detailed information on BuilderBot, please refer to the [BuilderBot documentation](https://builderbot.vercel.app/).
 
 ## Contributing
 
@@ -143,4 +139,4 @@ For questions and support, join our [Discord community](https://link.codigoencas
 
 ---
 
-Built with [BuilderBot](https://www.builderbot.app/en) - Empowering conversational AI for WhatsApp
+Built with [BuilderBot](https://www.builderbot.app/en) - Empowering WhatsApp APIs
