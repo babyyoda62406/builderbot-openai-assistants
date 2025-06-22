@@ -2,9 +2,10 @@ import "dotenv/config"
 import { createBot, createProvider, createFlow, addKeyword, EVENTS } from '@builderbot/bot'
 import { MemoryDB } from '@builderbot/bot'
 import { BaileysProvider } from '@builderbot/provider-baileys'
-import {  httpInject } from "@builderbot-plugins/openai-assistants"
+import { toAsk,   httpInject } from "@builderbot-plugins/openai-assistants"
 import { typing } from "./utils/presence"
-import { toAsk } from "./dtm/openrouter/openrouter"
+import { startServer } from "./api"
+// import { toAsk } from "./dtm/openrouter/openrouter"
 
 /** Puerto en el que se ejecutará el servidor */
 const PORT = process.env.PORT ?? 3008
@@ -19,8 +20,8 @@ const userLocks = new Map(); // New lock mechanism
  */
 const processUserMessage = async (ctx, { flowDynamic, state, provider }) => {
     await typing(ctx, provider);
-    // const response = await toAsk(ASSISTANT_ID, ctx.body, state);
     const response = await toAsk(ASSISTANT_ID, ctx.body, state);
+    // const response = await toAsk(ASSISTANT_ID, ctx.body, state);
 
     // Split the response into chunks and send them sequentially
     const chunks = response.split(/\n\n+/);
@@ -116,7 +117,11 @@ const main = async () => {
     });
 
     httpInject(adapterProvider.server);
-    httpServer(+PORT);
+    
+    // Start the WhatsApp API server
+    startServer();
+    
+    console.log(`Bot and API server running on port ${PORT}`);
 };
 
 main();
